@@ -19,7 +19,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   FirebaseAuth auth;
   final GoogleSignIn googleSignInAuth;
 
-  String _verificationId = "";
+  String _verificationId = "ftNyw7bw8upZ3XhF7ni1";
 
   FirebaseRemoteDataSourceImpl({
     this.fireStore,
@@ -221,26 +221,24 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       TextMessageEntity textMessageEntity, String channelId) async {
     print("our Channel Id$channelId");
     print("our Channel Id${textMessageEntity.sederUID}");
-    // final messagesRef = fireStore
-    //     .collection("myChatChannel")
-    //     .doc(channelId)
-    //     .collection("messages");
+    final messagesRef = fireStore
+        .collection("myChatChannel")
+        .doc(channelId)
+       .collection("messages");
 
-    //MessageId
-    // final messageId = messagesRef.doc().id;
-    //
-    // final newMessage = TextMessageModel(
-    //   message: textMessageEntity.message,
-    //   messageId: messageId,
-    //   messageType: textMessageEntity.messsageType,
-    //   recipientName: textMessageEntity.recipientName,
-    //   recipientUID: textMessageEntity.recipientUID,
-    //   sederUID: textMessageEntity.sederUID,
-    //   senderName: textMessageEntity.senderName,
-    //   time: textMessageEntity.time,
-    // ).toDocument();
-    //
-    // messagesRef.doc(messageId).set(newMessage);
+
+    final messageId = messagesRef.doc().id;
+       final newMessage = TextMessageModel(
+       message: textMessageEntity.message,
+       messageId: messageId,
+       messageType: textMessageEntity.messsageType,
+       recipientName: textMessageEntity.recipientName,
+       recipientUID: textMessageEntity.recipientUID,
+       sederUID: textMessageEntity.sederUID,
+       senderName: textMessageEntity.senderName,
+       time: textMessageEntity.time,
+     ).toDocument();
+     messagesRef.doc(messageId).set(newMessage);
   }
 
   @override
