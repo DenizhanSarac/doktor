@@ -19,7 +19,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   FirebaseAuth auth;
   final GoogleSignIn googleSignInAuth;
 
-  String _verificationId = "";
+  String _verificationId = "ftNyw7bw8upZ3XhF7ni1";
 
   FirebaseRemoteDataSourceImpl({
     this.fireStore,
