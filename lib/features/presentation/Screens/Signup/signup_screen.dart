@@ -84,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Setting up your account, Please Wait",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
+          Text("Hesap Oluşturuluyor, Lütfen Bekleyiniz",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
           SizedBox(height: 30,),
           SpinKitFadingCube(
             itemBuilder: (BuildContext context, int index) {
@@ -143,7 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Icons.person,
                         color: kPrimaryColor,
                       ),
-                      hintText: "Username",
+                      hintText: "Kullanıcı Adı",
                       border: InputBorder.none,
                     ),
                   ),
@@ -157,7 +157,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Icons.person,
                         color: kPrimaryColor,
                       ),
-                      hintText: "Your Email",
+                      hintText: "Mail Adresiniz",
                       border: InputBorder.none,
                     ),
                   ),
@@ -169,7 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     obscureText: _isShowPassword == false ? true : false,
                     cursorColor: kPrimaryColor,
                     decoration: InputDecoration(
-                      hintText: "Password",
+                      hintText: "Şifre",
                       counterText: "",
                       icon: Icon(
                         Icons.lock,
@@ -212,7 +212,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ],
                 ),
                 RoundedButton(
-                  text: "SIGNUP",
+                  text: "Üye Ol",
                   press: _signUpSubmit,
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.03),
