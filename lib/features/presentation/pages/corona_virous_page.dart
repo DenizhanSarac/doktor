@@ -6,7 +6,7 @@ class CoronaVirusPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WebView(
-      initialUrl: "https://covid.cdc.gov/",
+      initialUrl: "https://covid19.saglik.gov.tr",
     );
   }
 }

@@ -17,11 +17,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_launcher/map_launcher.dart' as lunch;
 
 class HomePage extends StatefulWidget {
-  final LatLng location;
-  final MapType mapType;
   final String uid;
 
-  HomePage({Key key, this.location, this.mapType, this.uid}) : super(key: key);
+  HomePage({Key key, this.uid}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -29,25 +27,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
-  GoogleMapController _googleMapController;
-  Map<PolylineId, Polyline> polyline = <PolylineId, Polyline>{};
-  List<LatLng> routes = [];
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
-  void _onMapCreated(GoogleMapController controller) async {
-    if (mounted)
-      setState(() {
-        _googleMapController = controller;
-      });
-  }
+
+
 
   @override
   void initState() {
     super.initState();
     BlocProvider.of<GetHospitalCubit>(context).getHospitals();
     // _setMarker();
-    print(
-        'LocationDatabase ${widget.location.latitude},${widget.location.longitude}');
   }
 
   @override
@@ -69,17 +57,8 @@ class _HomePageState extends State<HomePage> {
             final user=userState.data.firstWhere((element) => element.uid==widget.uid,orElse: () => UserModel());
             return Stack(
               children: <Widget>[
-                GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  mapType: MapType.normal,
-                  zoomControlsEnabled: false,
-                  markers: Set<Marker>.of(markers.values),
-                  polylines: Set.of(polyline.values),
-                  initialCameraPosition:
-                  CameraPosition(zoom: 12, target: widget.location),
-                ),
                 Align(
-                  alignment: Alignment.bottomLeft,
+                  alignment: Alignment(0.5, -0.5),
                   child: BlocBuilder<GetHospitalCubit, GetHospitalState>(
                     builder: (context, getHospitalState) {
                       if (getHospitalState is GetHospitalLoaded) {
@@ -156,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                                           Text("${getHospitalDetailsState.data[index].qualification}",maxLines: 1,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 10,color: Colors.black.withOpacity(.6)),),
                                           Text(getHospitalDetailsState.data[index].email=="null"?"Email: --":"${getHospitalDetailsState.data[index].email}",maxLines: 1,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 10,color: Colors.black.withOpacity(.6)),),
                                           Text("Gender: ${getHospitalDetailsState.data[index].gender}",maxLines: 1,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 10,color: Colors.black.withOpacity(.6)),),
-                                          SizedBox(height: 5,),
+                                          SizedBox(height: 30,),
                                           InkWell(
                                             onTap: (){
                                               if (getHospitalDetailsState.data[index].doctorId!="null"){
@@ -168,7 +147,7 @@ class _HomePageState extends State<HomePage> {
 
                                                 )));
                                                 BlocProvider.of<UserCubit>(context).createChatChannel(
-                                                    uid: widget.uid, otherUid: getHospitalDetailsState.data[index].doctorId,
+                                                  uid: widget.uid, otherUid: getHospitalDetailsState.data[index].doctorId,
                                                 );
                                               }else{
                                                 snackBar(msg: "Message is disabled",scaffoldState: scaffoldState);
@@ -207,15 +186,6 @@ class _HomePageState extends State<HomePage> {
           }
           return Stack(
             children: <Widget>[
-              GoogleMap(
-                onMapCreated: _onMapCreated,
-                mapType: MapType.normal,
-                zoomControlsEnabled: false,
-                markers: Set<Marker>.of(markers.values),
-                polylines: Set.of(polyline.values),
-                initialCameraPosition:
-                    CameraPosition(zoom: 12, target: widget.location),
-              ),
               Align(
                 alignment: Alignment.center,
                 child: Row(
@@ -253,21 +223,6 @@ class _HomePageState extends State<HomePage> {
         .asUint8List();
   }
 
-  _partnerPolyLine(List<LatLng> routes) {
-    PolylineId _partnerPolylineId =
-        PolylineId('PaitenttoHospitalRountePoint001');
-    var line = Polyline(
-      polylineId: _partnerPolylineId,
-      consumeTapEvents: true,
-      width: 6,
-      color: Colors.red,
-      jointType: JointType.bevel,
-      points: routes,
-    );
-    if (mounted)
-      setState(() {
-        polyline[_partnerPolylineId] = line;
-      });
   }
 
   Widget _listItem(int index, List<HospitalEntity> hospitalData) {
@@ -325,13 +280,13 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Expanded(
                         child: Text(
-                      "address:${hospitalData[index].hospitalFullAddress}",
-                      maxLines: 2,
-                      style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black.withOpacity(.4)),
-                    )),
+                          "Adres:${hospitalData[index].hospitalFullAddress}",
+                          maxLines: 2,
+                          style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black.withOpacity(.4)),
+                        )),
                   ],
                 ),
                 SizedBox(
@@ -343,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Departments",
+                        "Bölümler",
                         style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
@@ -353,12 +308,12 @@ class _HomePageState extends State<HomePage> {
                         onTap: () async {
                           var addresses = await Geocoder.local
                               .findAddressesFromQuery(
-                                  hospitalData[index].hospitalFullAddress);
+                              hospitalData[index].hospitalFullAddress);
                           var first = addresses.first;
 
                           //  MapsLauncher.launchCoordinates(37.4220041, -122.0862462);
                           final availableMaps =
-                              await lunch.MapLauncher.installedMaps;
+                          await lunch.MapLauncher.installedMaps;
                           print(
                               "mapisAvb $availableMaps"); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
                           if (await lunch.MapLauncher.isMapAvailable(
@@ -368,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                                 coords: lunch.Coords(first.coordinates.latitude,
                                     first.coordinates.longitude),
                                 title:
-                                    "${hospitalData[index].hospitalFullAddress}");
+                                "${hospitalData[index].hospitalFullAddress}");
                           } else {
                             print("not avaiable");
                           }
@@ -378,9 +333,9 @@ class _HomePageState extends State<HomePage> {
                             decoration: BoxDecoration(
                                 color: Colors.green[400],
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(8))),
+                                BorderRadius.all(Radius.circular(8))),
                             child: Text(
-                              "Get Direction",
+                              "Yol tarifi al",
                               style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
@@ -407,7 +362,7 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                             color: Colors.grey.withOpacity(.5),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
+                            BorderRadius.all(Radius.circular(10))),
                         child: Text(hospitalData[index].departments[depIndex]),
                       );
                     },
@@ -426,27 +381,12 @@ class _HomePageState extends State<HomePage> {
     var addresses = await Geocoder.local.findAddressesFromQuery(address);
     var first = addresses.first;
 
-    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target:
-                LatLng(first.coordinates.latitude, first.coordinates.longitude),
-            zoom: 10)));
+
   }
 
   _getCoordinates(String address) async {
     var addresses = await Geocoder.local.findAddressesFromQuery(address);
     var first = addresses.first;
 
-    final MarkerId markerId = MarkerId(address);
-    // creating a new MARKER
-    final Marker marker = Marker(
-      markerId: markerId,
-      position: LatLng(first.coordinates.latitude, first.coordinates.longitude),
-      infoWindow: InfoWindow(title: address, snippet: '*'),
-    );
-
-    setState(() {
-      markers[markerId] = marker;
-    });
   }
-}
+

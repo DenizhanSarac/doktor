@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Setting up your account, Please Wait",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
+          Text("Hesap Oluşturuluyor, Lütfen Bekleyiniz",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
           SizedBox(height: 30,),
           SpinKitFadingCube(
             itemBuilder: (BuildContext context, int index) {
@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Icons.person,
                         color: kPrimaryColor,
                       ),
-                      hintText: "your Email",
+                      hintText: "Mail",
                       border: InputBorder.none,
                     ),
                   ),
@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     cursorColor: kPrimaryColor,
                     decoration: InputDecoration(
                       counterText: "",
-                      hintText: "Password",
+                      hintText: "Şifre",
                       icon: Icon(
                         Icons.lock,
                         color: kPrimaryColor,
@@ -185,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 RoundedButton(
-                  text: "LOGIN",
+                  text: "Giriş Yap",
                   press: _loginUpSubmit,
                 ),
                 SizedBox(height: MediaQuery

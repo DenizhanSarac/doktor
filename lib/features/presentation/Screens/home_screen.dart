@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   PageController _pageController;
 
   get pages => [
-        HomePage(location: LatLng(37.419857, -122.078827),uid: widget.uid,),
+    HomePage(uid: widget.uid,),
         CoronaVirusPage(),
         MessagesPage(uid:widget.uid,),
         ProfilePage(uid: widget.uid,),
@@ -77,15 +77,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 28,
                         width: 28,
                         child: Image.asset('assets/corona.png')),
-                    title: Text('Coronavirus'),
+                    title: Text('Korona Virüs'),
                     activeColor: Colors.pink),
                 BottomNavyBarItem(
                     icon: Icon(Icons.message),
-                    title: Text('Messages'),
+                    title: Text('Mesajlar'),
                     activeColor: Colors.pink),
                 BottomNavyBarItem(
                     icon: Icon(FontAwesome.user_o),
-                    title: Text('profile'),
+                    title: Text('profil'),
                     activeColor: Colors.purpleAccent),
                 if (user.accountType==AppConst.doctor)
                 BottomNavyBarItem(
@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Setting up your account, Please Wait",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
+          Text("Hesap Oluşturuluyor, Lütfen Bekleyiniz",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
           SizedBox(height: 30,),
           SpinKitFadingCube(
             itemBuilder: (BuildContext context, int index) {
